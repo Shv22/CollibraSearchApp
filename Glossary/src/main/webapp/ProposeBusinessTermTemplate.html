@@ -1,0 +1,49 @@
+	<md-dialog flex="50">
+          <md-content class="popUp-padding">
+          		<div class="popup-header">
+					<h4 class="popUp-title">Propose Business Term
+					<button class="close" ng-click="close()">&times;</button>
+					</h4>
+				</div>
+              <div class="popUp-body">
+	              <form name="proposeForm">
+						<div class="form-group">
+							<label for="inputName" class="inputHeader">Name</label>
+							<md-tooltip>This field is mandatory</md-tooltip>
+							<input class="form-control" name="BusinessTermName" ng-model="term.name" type="text" required>
+						</div>
+						<div class="form-group">
+							<label for="inputName" class="inputHeader">Type</label>
+							<md-select ng-model="businessAssetType" class="popUp-select" placeholder="Select business asset" required>
+		            				<md-option ng-repeat="businessTerm in businessTermTypes" ng-value="businessTerm.id">
+		              					{{ businessTerm.type }}
+		            				</md-option>
+		          			</md-select>
+		          		</div>
+						<div class="form-group">
+							<label for="inputName" class="inputHeader">Domain</label>
+		                	<md-select ng-model="domainName" class="popUp-select" placeholder="Select Business Glossary" required>
+		            				<md-option ng-repeat="domain in domainListNew" ng-value="domain.name.id">
+		              					{{ domain.name.val }}
+		            				</md-option>
+		          			</md-select>
+		          		</div>
+						<div class="form-group">
+							<label for="inputDefinition" class="inputHeader">Proposed Definition</label>
+							<textarea class="form-control" name="BusinessTermDefinition" ng-model="term.definition" placeholder="Click here and start typing..."></textarea>
+						</div>
+						<div class="form-group">
+							<label for="inputDescription" class="inputHeader">Proposed Descriptive Example</label>
+							<textarea class="form-control" name="BusinessTermDescription" ng-model="term.description" placeholder="Click here and start typing..."></textarea>
+						</div>
+		          		<div class="form-group">
+							<label for="reasonForProposal" class="inputHeader">Reason for proposal</label>
+							<textarea class="form-control" name="reasonForProposal" ng-model="term.note" placeholder="Click here and start typing..."></textarea>
+						</div>
+		          		</form>
+		          		<div class="popUp-footer">
+							<button ng-disabled="proposeForm.$invalid" class="btn btn-primary proposeBtn" ng-click="proposeTerm()">Propose</button>
+	              		</div>
+              		</div>
+          </md-content>
+</md-dialog>

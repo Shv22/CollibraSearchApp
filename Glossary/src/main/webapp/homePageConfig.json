@@ -1,0 +1,201 @@
+{
+	"SubjectAreas": {
+		"id": {
+				"value": "00000000-0000-0000-0000-000000031109"
+			},
+		"defaultList": [	
+		{
+			"logo": {
+				"value": "./img/banners/nielsen-banner.jpg"
+			},
+			"heading": {
+				"value": "Account and Cost Center Information"
+			},
+			"id": {
+				"value": "af9b7cce-15b5-4b7a-a69c-439e5d46d28e"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "ACM - Average Commercial Minutes"
+			},
+			"id": {
+				"value": "5e8056c6-dc97-4731-94fe-2a82de68bb78"
+			}
+		},		
+		 {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "ADM - Nielsen Nationals MIT-ACM Data"
+			},
+			"id": {
+				"value": "46260ca7-0b94-4245-b23e-e709fcc1f92a"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Adjuster - Ad Traffic Data"
+			},
+			"id": {
+				"value": "eded048d-22a8-49c6-8f19-4aef15ad230d"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Ad Sales Linear Data - VCI"
+			},
+			"id": {
+				"value": "e1425536-6519-42ce-b366-67075b40cccd"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Ad Sales MDM Advertiser and Agency Data"
+			},
+			"id": {
+				"value": "6b3110b6-4287-4964-b54a-014ccbcf001f"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "AMRLD - All Minute Respondent Level Data"
+			},
+			"id": {
+				"value": "312c40f4-6425-4ab0-b9ba-0a919e0087e5"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Analytics Data Mart Nielsen MIT - ACM Data for Linear"
+			},
+			"id": {
+				"value": "6c3ca6d8-f1ac-4220-b2dd-37354a993fd2"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Application details"
+			},
+			"id": {
+				"value": "25e669d6-e036-4f1d-95c9-815ba2b47fbf"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Application, User Access and Ticket details"
+			},
+			"id": {
+				"value": "c3066ed4-0bb4-4cd9-96c3-ae1b810e4215"
+			}
+		},
+		 {
+			"logo": {
+				"value": "./img/banners/azure.jpg"
+			},
+			"heading": {
+				"value": "Audience insight analhytical data"
+			},
+			"id": {
+				"value": "06718027-d83b-4bd8-8933-1d145d3e4898"
+			}
+		}
+		]},
+	"LineOfBusiness": {
+			"id": {
+				"value": "00000000-0000-0000-0000-000000031110"
+			},	
+			"defaultList": [ {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "AdSales"
+			},
+			"id": {
+				"value": "6c2b6d16-a34b-4ac2-8db8-c85b27fcb257"
+			}
+		}, {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "Digital Media"
+			},
+			"id": {
+				"value": "ea7b241b-721f-424f-a555-21a346c1ec7e"
+			}
+		}]
+	},
+	"DataSources": {
+		"id": {
+				"value": "00000000-0000-0000-0000-000000031301"
+			},	
+			"defaultList": [ {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "Chyron-WRC"
+			},
+			"id": {
+				"value": "52f2ba07-5565-4199-a199-9769f62bb89c"
+			}
+		}, {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "Audience Studio Cloud (AWS/ RedShift)"
+			},
+			"id": {
+				"value": "395d2451-24cb-4243-8d25-78c0b56b5c9f"
+			}
+		}, {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "Domo"
+			},
+			"id": {
+				"value": "0e341731-1709-4501-bcbf-320280086689"
+			}
+		}, {
+			"logo": {
+				"value": ""
+			},
+			"heading": {
+				"value": "Android"
+			},
+			"id": {
+				"value": "6bf112b3-95d9-47d0-8e03-302f5516f50a"
+			}
+		}]
+	}
+}

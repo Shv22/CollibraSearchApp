@@ -1,0 +1,613 @@
+
+<!DOCTYPE >
+<html ng-app="SearchGateway" ng-controller="SearchController">
+<head>
+
+
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script
+	src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-resource.min.js"></script>
+
+<script src="./node_modules/angular-material/angular-material.min.js"></script>
+<script src="./node_modules/angular-animate/angular-animate.js"></script>
+<script src="./node_modules/angular-aria/angular-aria.js"></script>
+<script
+	src="http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.js"></script>
+<script
+	src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+<script src="./js/application.js?v=71"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./node_modules/angular-material/angular-material.min.css">
+<!-- <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+	
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet"
+	href='https://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet'>
+<link rel="stylesheet" href="./css/application.css?v=6786">
+<link rel="stylesheet" href="./css/sassypam.css?v=6786">
+<link rel="stylesheet" href="./css/ui2.css?v=6786">
+<link href="{{ favicon }}" rel="icon" type="image/x-icon" />
+
+<title>NBCU Collibra Search App</title>
+</head>
+<body data-ng-init="init();ownerCount = 0;stewardCount= 0;"
+	class="app-theme"
+	ng-class="transparent === true ? 'app-theme-overflow2': 'app-theme-overflow1'"
+	ng-cloak>
+
+	<div ng-show="loadingApp">
+		<div class="loadingApp1">
+			<div class="load-app">
+				<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size: 48px"></i>
+			</div>
+		</div>
+	</div>
+	<div ng-hide="loadingApp">
+		<div>
+			<form>
+				
+				<div>
+					<section layout="row" flex="" class="SearchAsset">
+						<md-content class="search-content" style="{{contentWidth}}"
+							id="main">
+						<div ng-show="loading">
+							<div class="load-search-content">
+								<i class="fa fa-spinner fa-spin fa-3x fa-fw"
+									style="font-size: 48px"></i>
+							</div>
+						</div>
+						<div ng-hide="loading">
+						
+						<div class="logo-icon">
+									<a href="/Glossary/landingPage.html?term=&showSearch=true"> <img
+								src="{{ logo }}" width="35px" align="left">
+							</a>
+								</div>
+								
+							<md-toolbar style="background-color:transparent;"> 
+
+							<div flex layout="column" flex-sm="200" flex-gt-md="100"
+								flex-gt-sm="100">
+								
+								<md-tabs md-selected="activeTabIndex" id="md-tabs" md-stretch-tabs="no"
+									class="md-primary md-hue-1" md-swipe-content md-dynamic-height>
+									
+								<!-- Home Icon on Tab -->
+								<md-tab ng-repeat="tab in tabs"
+									md-on-select="loadApp(tab,$index);" > <md-tab-label>
+								<div>
+									<i ng-class="styleFunction($index)"
+										style="padding-left: 50px; font-size: 18px">&nbsp;&nbsp;{{ tab }}</i>
+								</div>
+								</br>
+								<div>
+									<font size='1'>{{ searchResultSetSize[$index] }} Items</font>
+								</div>
+								</md-tab-label> <md-tab-body class="search-content" style="{{contentWidth}}; "height":"100%">
+
+
+								<div class="message-header-top">
+									<div class="search-header">
+										<div>
+											<button type="submit" id="bth-search em-alt h6"
+												class="filterButton" ng-click="toggleLeft()" style="background-color: {{panelColor}}">
+												<span class="glyphicon glyphicon-filter" ></span>
+											</button>
+										</div>
+
+										<div ng-if="filtered.length == 0">
+											<div class="page-header-info" style="color: {{paginationColor}};">
+												<font size={{paginationSize}}><b>{{ tab }} :</b>&nbsp;No matching records found</font>
+											</div>
+										</div>
+										<div ng-if="filtered.length != 0">
+											<div ng-if="currentPage == 0">
+												<div ng-if="(pageSize*(currentPage+1)) > filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing 1 through {{
+														filtered.length*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+
+												</div>
+												<div ng-if="(pageSize*(currentPage+1)) <= filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing 1 through {{
+														pageSize*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+												</div>
+											</div>
+											<div ng-if="currentPage != 0">
+												<div ng-if="pageSize == filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1
+														}} through {{ filtered.length*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+												</div>
+												<div ng-if="(pageSize > filtered.length)">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1
+														}} through {{ searchResultSetSize[$index] }} of {{
+														searchResultSetSize[$index]}}</font>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="pagination-header">
+										<div class="ui-grid-pager-container">
+											<div class="ui-grid-pager-control">
+												<button type="button" ng-disabled="currentPage == 0"
+													ng-click="currentPage=0;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowFirstPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">First Page</label> </md-tooltip>
+													<div class="first-triangle">
+														<div class="first-bar"></div>
+													</div>
+												</button>
+												<button type="button" ng-disabled="currentPage == 0"
+													ng-click="currentPage=currentPage-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowPreviousPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Previous Page</label> </md-tooltip>
+													<div class="first-triangle prev-triangle"></div>
+												</button>
+												<span> <span ng-if="filtered.length === 0"> 
+														<span>
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}>
+																 0 / 0 </font></span>
+													</span>
+													
+														
+												</span> <span ng-if="filtered.length != 0"> <span
+														ng-if="currentPage+1 > Math.ceil((searchResultSetSize[$index])/pageSize)">
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}> 1 /
+																{{ Math.ceil((searchResultSetSize[$index])/pageSize) }}
+																{{ showFirstPage() }} </font></span>
+													</span> <span
+														ng-if="currentPage+1 <= Math.ceil((searchResultSetSize[$index])/pageSize)">
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}> {{
+																currentPage+1 }} / {{
+																Math.ceil((searchResultSetSize[$index])/pageSize) }}</font></span>
+													</span>
+												</span>
+												</span>
+												<button type="button"
+													ng-disabled="currentPage >= searchResultSetSize[$index]/pageSize - 1"
+													ng-click="currentPage=currentPage+1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowNextPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Next Page</label> </md-tooltip>
+													<div class="last-triangle next-triangle"></div>
+												</button>
+												<button type="button"
+													ng-disabled="currentPage >= searchResultSetSize[$index]/pageSize - 1"
+													ng-click="currentPage=Math.ceil((searchResultSetSize[$index])/pageSize)-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowLastPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Last Page</label> </md-tooltip>
+													<div class="last-triangle next-triangle">
+														<div class="last-bar"></div>
+													</div>
+												</button>
+											</div>
+											<div class="ui-grid-pager-row-count-picker">
+												<select ng-model="pageSize"
+													ng-init=" pageSize = pages[0].size"
+													ng-change="getNext(0,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													id="selectBox">
+													<option ng-repeat="page in pages" value="{{ page.size }}">{{
+														page.size }}</option>
+												</select> <font size={{paginationSize}}><span class="ui-grid-pager-row-count-label ng-binding" style="color: {{paginationColor}};"><font size={{paginationSize}}>&nbsp;items
+													per page</font></span></font>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div ng-show="loadingTab">
+									<div class="loadingTabPanel">
+										<div class="load-search-content">
+											<i class="fa fa-spinner fa-spin fa-3x fa-fw"
+												style="font-size: 48px"></i>
+										</div>
+									</div>
+								</div>
+															
+
+								<div ng-hide="loadingTab">
+									<div class="assetTiles-content" id="assetTiles-content"
+										ng-cloak>
+										<div class="linha">
+											<span
+												ng-repeat="resultItem in filtered = (searchResultSet[$index])">
+												<div class="assetTile assetTileBackground" style="width:{{activeCardWidth}}%; height:{{activeCardHeight}}px">
+													<div class="assetName">
+														<h6 class="em-default">{{ resultItem.name.val }}</h6>
+														<div style="margin-left:15px;">
+															<i class="fa fa-eye" ng-click="previewAsset(resultItem);toggleRight();"></i>
+														</div>
+														
+														<a href="{{ resultItem.name.pageUrl }}" target="_blank"
+														class="em-default" ><div style="margin-left:15px;">
+															<i class="fa fa-external-link-alt"></i>
+														</div></a>
+														
+													</div>
+													
+													<div class="assetTileBody">
+															<div><span ng-repeat="attribute in resultItem.attributes">
+															<div ng-if="attribute.type == 'Description'">
+																<p><font size={{subHeadingSize}}>{{ attribute.val | limitTo: 300
+																	}}{{attribute.val.length > 300 ? '...' : '' }}</font></p>
+															</div>
+															
+															<div ng-show="attribute.type == 'Data Source'">
+																<div class="header-value" ><p><b>{{ attribute.type
+																	}}</b> :
+																<a href="//{{ attribute.val }}" target="_blank"
+																	id="em-default" style="color: black;"><font size={{subHeadingSize}}>{{attribute.val}}</font></a></p></div>
+															</div>
+															
+															</span>
+															
+															<div ng-if="resultItem.steward != ''">
+															<div class="header-value">
+																<b>Business Steward</b> :
+																<a href="mailto:{{resultItem.steward.emailAddress}}" style="color: black;">{{ resultItem.steward.firstName
+																}} {{ resultItem.steward.lastName }}</a>
+															</div>
+															<br />
+														</div>
+														</div>
+					
+													</div>
+
+													<div class="assetTileFooter" >
+														<h6 class="em-default" style="background:{{activeTabColor}}">{{ resultItem.context.val }}</h6>
+													</div>
+												</div>
+											</span>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="message-header-bottom">
+									<div class="search-header">
+										<div ng-if="filtered.length == 0">
+											<div class="page-header-info" style="color: {{paginationColor}};">
+												<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;No matching records found</font>
+											</div>
+										</div>
+										<div ng-if="filtered.length != 0">
+											<div ng-if="currentPage == 0">
+												<div ng-if="(pageSize*(currentPage+1)) > filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing 1 through {{
+														filtered.length*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+												</div>
+												<div ng-if="(pageSize*(currentPage+1)) <= filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing 1 through {{
+														pageSize*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+												</div>
+											</div>
+											<div ng-if="currentPage != 0">
+												<div ng-if="pageSize == filtered.length">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1
+														}} through {{ filtered.length*(currentPage+1) }} of {{
+														searchResultSetSize[$index] }}</font>
+													</div>
+												</div>
+												<div ng-if="(pageSize > filtered.length)">
+													<div class="page-header-info" style="color: {{paginationColor}};">
+														<font size={{paginationSize}}><b>{{ tab }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1
+														}} through {{ searchResultSetSize[$index] }} of {{
+														searchResultSetSize[$index]}}</font>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="pagination-header">
+										<div class="ui-grid-pager-container">
+											<div class="ui-grid-pager-control">
+												<button type="button" ng-disabled="currentPage == 0"
+													ng-click="currentPage=0;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowFirstPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">First Page</label> </md-tooltip>
+													<div class="first-triangle">
+														<div class="first-bar"></div>
+													</div>
+												</button>
+												<button type="button" ng-disabled="currentPage == 0"
+													ng-click="currentPage=currentPage-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowPreviousPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Previous Page</label> </md-tooltip>
+													<div class="first-triangle prev-triangle"></div>
+												</button>
+												<span> <span ng-if="filtered.length === 0"> <span>
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}>
+																 0 / 0 </font></span>
+													</span>
+												</span> <span ng-if="filtered.length != 0"> <span
+														ng-if="currentPage+1 > Math.ceil((searchResultSetSize[$index])/pageSize)">
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}> 1 /
+																{{ Math.ceil((searchResultSetSize[$index])/pageSize) }}
+																{{ showFirstPage() }} </font></span>
+													</span> <span
+														ng-if="currentPage+1 <= Math.ceil((searchResultSetSize[$index])/pageSize)">
+															<span class="ui-grid-pager-max-pages-number" style="color: {{paginationColor}};"><font size={{paginationSize}}> {{
+																currentPage+1 }} / {{
+																Math.ceil((searchResultSetSize[$index])/pageSize) }} </font></span>
+													</span>
+												</span>
+												</span>
+												<button type="button"
+													ng-disabled="currentPage >= searchResultSetSize[$index]/pageSize - 1"
+													ng-click="currentPage=currentPage+1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowNextPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Next Page</label> </md-tooltip>
+													<div class="last-triangle next-triangle"></div>
+												</button>
+												<button type="button"
+													ng-disabled="currentPage >= searchResultSetSize[$index]/pageSize - 1"
+													ng-click="currentPage=Math.ceil((searchResultSetSize[$index])/pageSize)-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds,$index,domainIdList[$index],termIdList[$index])"
+													aria-label="ShowLastPage">
+													<md-tooltip md-direction="top"> <label
+														class="tooltip-details">Last Page</label> </md-tooltip>
+													<div class="last-triangle next-triangle">
+														<div class="last-bar"></div>
+													</div>
+												</button>
+											</div>
+											<div class="ui-grid-pager-row-count-picker" style="color: {{paginationColor}};">
+												<select ng-model="pageSize"
+													ng-init=" pageSize = pages[0].size"
+													ng-change="getNext(0,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)"
+													id="selectBox">
+													<option ng-repeat="page in pages" value="{{ page.size }}" style="color: {{paginationColor}};"><font size={{paginationSize}}>{{
+														page.size }}</font></option>
+												</select> <span class="ui-grid-pager-row-count-label ng-binding" style="color: {{paginationColor}};">&nbsp;<font size={{paginationSize}}>items
+													per page </font></span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								</md-tab-body> </md-tab>
+								
+								<!-- Integration Tab -->
+								<md-tab ng-repeat="tab in integrationTab" > 
+								<div>
+									<i class="{{ tab.icon }}"
+										style="font-size: 18px">&nbsp;&nbsp;&nbsp;&nbsp;{{ tab.heading }}</i>
+								</div>
+
+								<md-tab-body>
+									<iframe src="{{tab.url}}" width="100%" height="100%"></iframe>
+								</md-tab-body> 
+								</md-tab>
+								
+								
+								<!-- Search Menu in Tab --> 
+								</md-tabs>
+								<div>
+									<div class="input-group stylish-input-group">
+										<input type="text" placeholder="Search " class="form-control"
+											id="searchTerm" ng-model="searchForm.term" width="100%"> <span
+											class="input-group-addon">
+											<button type="submit" id="bth-search" class="searchButton"
+												ng-click="searchTerm()">
+												<span class="glyphicon glyphicon-search"></span>
+											</button>
+											
+											<button type="submit" id="bth-search" class="searchButton"
+												ng-click="clearSearchAndReoload()">
+												<span class="fa fa-times closeIcon"></span>
+											</button> 											
+										</span>
+									</div>
+								</div>
+
+							</div>
+
+							 </md-toolbar> 
+						</md-content>
+					</section>
+
+					<md-sidenav class="md-sidenav-left md-whiteframe-0dp"
+								md-component-id="left">
+						<div class="preview-panel">
+
+							<div id="panel-header" style="background-color: {{activeTabColor}}">
+								<font size={{headingSize}} style="color: {{headingColor}};">Filters</font><i
+									class="fa fa-times closeIcon" aria-hidden="true"
+									ng-click="closeLeftPreviewPanel()" role="button"></i>
+							</div>
+							
+							<div class="filter-container">
+								
+								
+								<span ng-if="app == 'GlossaryApp'"> <md-button
+										class="md-raised md-primary proposeTermButton"
+										ng-click="open()">Propose new Term</md-button>
+								</span>
+
+							<ul id="accordion" class="accordion">
+								<li>
+									<div class="link">
+										<i class="{{filter1Icon}}" style="font-size: 21px;"></i>
+										<div>
+											<font size={{headingSize}}>{{ filter1 }}</font>
+										</div>
+										<i class="fa fa-chevron-down"></i>
+									</div>
+									<ul class="submenu">
+										<li ng-repeat="domain in filterResultSet[loadedIndex]"><md-checkbox
+												ng-checked="exists(domain, selected, selectedDomainIds)"
+												ng-click="toggle(domain, selected, selectedDomainIds,selectedStatus,selectedStatusIds,loadedIndex,domainIdList[loadedIndex],termIdList[loadedIndex])"
+												class="facetCheck" md-no-ink="true"> <md-tooltip
+												md-direction="top">{{ domain.name.val }}</md-tooltip> <span
+												><font
+												size={{subHeadingSize}}>{{ domain.name.val | limitTo:
+													30 }}{{domain.name.val.length > 30 ? '...' : '' }}</font></span> </md-checkbox></li>
+									</ul>
+								</li>
+								<li>
+									<div class="link">
+										<i class="{{filter2Icon}}" style="font-size: 21px;"></i>
+										<div>
+											<font size={{headingSize}}>{{ filter2 }}</font>
+										</div>
+										<i class="fa fa-chevron-down"></i>
+									</div>
+									<ul class="submenu">
+										<li ng-repeat="status in finalStatusList[loadedIndex]"><md-checkbox
+												ng-checked="statusExists(status, selectedStatus,selectedDomainIds)"
+												ng-click="statusToggle(status,selected,selectedDomainIds,selectedStatus,selectedStatusIds,loadedIndex,domainIdList[loadedIndex],termIdList[loadedIndex])"
+												class="facetCheck" md-no-ink="true"> <md-tooltip
+												md-direction="top">{{ status.name }}</md-tooltip> <span
+												><font
+												size={{subHeadingSize}}>{{ status.name | limitTo: 30
+													}}{{status.name.length > 30 ? '...' : '' }}</font></span> </md-checkbox></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+							</div>
+							</md-sidenav>
+							
+							
+					<md-sidenav md-component-id="right"
+						class="md-sidenav-right md-whiteframe-100dp">
+					<div ng-hide="loading">
+						<div class="preview-panel">
+
+							<div id="panel-header" style="background-color: {{activeTabColor}}">
+								<a href="{{ assetForPreview.name.pageUrl }}" target="_blank"
+									class="text-color-accent12" style="color: {{headingColor}};"><font size={{headingSize}}>{{ assetForPreview.name.val | limitTo: 20
+											}}{{assetForPreview.name.val.length > 20 ? '...' : '' }}</font></a><i
+									class="fa fa-times closeIcon" aria-hidden="true"
+									ng-click="closeRightPreviewPanel()" role="button"></i>
+							</div>
+
+							<div class="preview-body">
+								<div class="section-type" ng-hide="{{isAsssetDescription}}">
+									<div id="text-color-accent2" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{ assetDescription }}</font></div>
+							
+								</div>
+								<div class="section-type">
+									<div class="title"><font size={{subHeadingSize}}>Status</font></div>
+									<div id="text-color-accent2" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{ assetForPreview.status
+										}}</font></div>
+								</div>
+								<div class="section-type">
+									<div class="title"><font size={{subHeadingSize}}>Created on</font></div>
+									<div id="text-color-accent2" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{
+										attributeTypeDetails.createdOn }}</font></div>
+								</div>
+								<div class="section-type">
+									<div class="title"><font size={{subHeadingSize}}>Last Modified</font></div>
+									<div id="text-color-accent2" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{
+										attributeTypeDetails.lastModified }}</font></div>
+								</div>
+
+								<div class="section-type" ng-if="assetForPreview.steward != ''">
+									<div class="title"><font size={{subHeadingSize}}>Business
+										Steward</font></div>
+									<div id="text-color-accent2">
+										<font size={{subHeadingSize}}><a href="mailto:{{assetForPreview.steward.emailAddress}}"
+											style="color: {{subHeadingColor}};">{{ assetForPreview.steward.firstName
+											}} {{ assetForPreview.steward.lastName }}</a></font>
+									</div>
+								</div>
+
+								<div class="section-type"
+									ng-repeat="attr in assetForPreview.attributes">
+									<div ng-show="'{{attr.type}}' != 'Description'"
+										ng-hide="'{{attr.type}}' == 'Data Source'">
+										<div class="title" ><font size={{subHeadingSize}}>{{ attr.type
+											}}</font></div>
+										<div id="text-color-accent2"
+											ng-hide="{{locationURLEnable}}" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{attr.val}}</font></div>
+									</div>
+
+									<div id="text-color-accent2" ng-show="{{locationURLEnable}}" style="color: {{subHeadingColor}};">
+										<a href="{{ assetForPreview.name.pageUrl }}" target="_blank"
+											class="text-color-accent12" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{attr.val}}</font></a>
+									</div>
+
+									<div ng-show="'{{attr.type}}' == 'Data Source'">
+										<div class="title"><font size={{subHeadingSize}}>{{ attr.type
+											}}</font></div>
+										<a href="//{{ attr.val }}" target="_blank"
+											id="text-color-accent2" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{attr.val}}</font></a>
+									</div>
+								</div>
+
+
+								<div class="section-type"
+									ng-hide="assetForPreview.targetRelation == '' && assetForPreview.sourceRelation == ''">
+									<div class="title"><font size={{subHeadingSize}}>Relations</font></div>
+									<div class="section-type"
+										ng-repeat="targetRelation in assetForPreview.targetRelation">
+										<div id="text-color-accent2"
+											ng-hide="{{locationURLEnable}}" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{
+											targetRelation.source.name }}</font></div>
+									</div>
+
+									<div class="section-type"
+										ng-repeat="targetRelation in assetForPreview.sourceRelation">
+										<div id="text-color-accent2"
+											ng-hide="{{locationURLEnable}}" style="color: {{subHeadingColor}};"><font size={{subHeadingSize}}>{{
+											targetRelation.target.name }}</font></div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+					</md-sidenav>
+			</form>
+		</div>
+	</div>
+	<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
+

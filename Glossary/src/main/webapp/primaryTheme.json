@@ -1,0 +1,48 @@
+{
+	"panelColor": "#34495e",
+	
+	"headingColor": "#fff",
+	
+	"headingSize": "2",
+	
+	"subHeadingColor": "black",
+	
+	"subHeadingSize": "2",
+	
+	"paginationColor": "black",
+	
+	"paginationSize": "2",
+	
+	"application": {
+		"GlossaryApp": {
+			
+			"tileTagColor": {
+				"value": "#00ff4e"
+			},
+			"tabIcon":{
+				"value": "fa fa-book"
+			}
+		},
+		"DataSetsApp": {
+			
+			"tileTagColor": {
+				"value": "#ffeb00"
+			},
+			"tabIcon":{
+				"value": "fa fa-book"
+			}
+			
+		},
+		"ReportsApp": {
+			
+			"tileTagColor": {
+				"value": "#ff8100"
+			},
+			"tabIcon":{
+				"value": "fa fa-book"
+			}
+			
+		}
+	}
+	
+}

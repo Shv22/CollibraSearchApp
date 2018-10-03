@@ -1,0 +1,268 @@
+{
+	"appName": "SearchApp",
+	"proxy": {
+		"proxyUrl": {
+			"value": "proxy.inbcu.com"
+		},
+		"proxyPort": {
+			"value": "80"
+		}
+	},
+	"defaultPageSize": "10",
+	"pageSizes": [{
+			"value": "100"
+		},
+		{
+			"value": "150"
+		},
+		{
+			"value": "200"
+		},
+		{
+			"value": "250"
+		}
+	],
+	"environment": {
+		"dgcRestUrl": {
+			"value": "https://nbcu-dev.collibra.com/rest/latest"
+		},
+		"dgcUrl": {
+			"value": "https://nbcu-dev.collibra.com"
+		},
+		"apiUser": {
+			"value": "nbc_api_user"
+		},
+		"apiUserPassword": {
+			"value": "nbc_api_user_1"
+		}
+	},
+	"apis": {
+		"searchApi": "/search",
+		"articulationCalculatorApi": "/articulation_calculator/",
+		"commentsApi1": "/term/",
+		"commentsApi2": "/comments",
+		"roleApi": "/role/",
+		"termApi": "/term",
+		"attributesApi": "/attributes",
+		"workflowApi1": "/workflow/",
+		"workflowApi2": "/start",
+		"attributeTypeApi": "/attribute_type/"
+	},
+	"defaultApp": "GlossaryApp",
+	"application": {
+		"GlossaryApp": {
+			"description": {
+				"value": "Search for Business Glossaries"
+			},
+			"title": {
+				"value": "Business Terms"
+			},
+			"tileTagColor": {
+				"value": "#009BEF"
+			},
+			"searchCategory": {
+				"value": "TE"
+			},
+			"vocabularyType": {
+				"value": "VC"
+			},
+			"domainId": {
+				"value": "00000000-0000-0000-0000-000000010001"
+			},
+			"termId": {
+				"value": "00000000-0000-0000-0000-000000011001"
+			},
+			"lobAssetTypeId": {
+				"value": "00000000-0000-0000-0000-000000031110"
+			},
+			"businessSegmentAssetTypeId": {
+				"value": "e91025f7-b4f0-45d1-9583-145629cd08bb"
+			},
+			"businessDimentionsDomainId": {
+				"value": "00000000-0000-0000-0000-000000030012"
+			},
+			"logo": {
+				"value": "./img/NBCUdatacentral-2color.png"
+			},
+			"favicon": {
+				"value": "./img/favicon.ico"
+			},
+			"filter1":{
+				"value": "Domain"
+			},
+			"filter2":{
+				"value": "Status"
+			},
+			"filter3":{
+				"value": "Line of Business"
+			},
+			"filter4":{
+				"value": "Business Segment"
+			},
+			"PaginationHeader":{
+				"value": "Business Glossary Terms"
+			},
+			"attributes":{
+    			"Definition":{
+    			    "name":"Definition",
+           			"id":"00000000-0000-0000-0000-000000000202",
+           			"display":"always",
+           			"isFacet":"false",
+           			"message":"No value has been given yet. Please use edit button to propose addition of Definition....."
+     			},
+     			"Description":{
+    			    "name":"Description",
+           			"id":"00000000-0000-0000-0000-000000003114",
+           			"display":"default",
+           			"isFacet":"false",
+           			"message":"No value has been given yet. Please use edit button to propose addition of Description....."
+     			},
+     			"Allowed Values":{
+     			    "name":"Allowed Values",
+           			"id":"00000000-0000-0000-0000-000000005026",
+           			"display":"always",
+           			"isFacet":"true",
+           			"message":"No value has been given yet. Please use edit button to propose addition of Descriptive Example"
+     			}
+			}
+		},
+		"DataSetsApp": {
+			"description": {
+				"value": "Search for Data Sets"
+			},		
+			"title": {
+				"value": "Data Sets"
+			},
+			"tileTagColor": {
+				"value": "#EA5013"
+			},
+			"searchCategory": {
+				"value": "TE"
+			},
+			"domainId": {
+				"value": "00000000-0000-0000-0000-000000030031"
+			},
+			"termId": {
+				"value": "00000000-0000-0000-0001-000400000001"
+			},
+			"lobAssetTypeId": {
+				"value": "00000000-0000-0000-0000-000000031110"
+			},
+			"businessSegmentAssetTypeId": {
+				"value": "e91025f7-b4f0-45d1-9583-145629cd08bb"
+			},
+			"businessDimentionsDomainId": {
+				"value": "00000000-0000-0000-0000-000000030012"
+			},			
+			"workflowId": {
+				"value": "2f8435ff-a1bb-4908-8a41-f261a3ab4f16"
+			},
+			"logo": {
+				"value": "./img/NBCUdatacentral-2color.png"
+			},
+			"favicon": {
+				"value": "./img/favicon.ico"
+			},
+			"filter1":{
+				"value": "DataSets"
+			},
+			"filter2":{
+				"value": "Status"
+			},
+			"filter3":{
+				"value": "Line of Business"
+			},
+			"filter4":{
+				"value": "Business Segment"
+			},			
+			"PaginationHeader":{
+				"value": "DataSets"
+			},
+			"attributes":{
+    			"Description":{
+    			    "name":"Description",
+           			"id":"00000000-0000-0000-0000-000000003114",
+           			"display":"default",
+           			"isFacet":"true",
+           			"message":"No value has been given yet"
+     			},
+     			"Certified":{
+     			    "name":"Certified",
+           			"id":"00000000-0000-0000-0001-000500000001",
+           			"display":"default",
+           			"isFacet":"true",
+           			"message":"No value has been given yet"
+     			}
+			}
+		},
+		"ReportsApp": {
+			"description": {
+				"value": "Search for Reports"
+			},
+			"title": {
+				"value": "Reports"
+			},
+			"tileTagColor": {
+				"value": "#3E870B"
+			},
+			"searchCategory": {
+				"value": "TE"
+			},
+			"domainId": {
+				"value": "00000000-0000-0000-0000-000000030022"
+			},
+			"termId": {
+				"value": "00000000-0000-0000-0000-000000031102"
+			},
+			"lobAssetTypeId": {
+				"value": "00000000-0000-0000-0000-000000031110"
+			},
+			"businessSegmentAssetTypeId": {
+				"value": "e91025f7-b4f0-45d1-9583-145629cd08bb"
+			},
+			"businessDimentionsDomainId": {
+				"value": "00000000-0000-0000-0000-000000030012"
+			},			
+			"workflowId": {
+				"value": "2f8435ff-a1bb-4908-8a41-f261a3ab4f16"
+			},
+			"logo": {
+				"value": "./img/NBCUdatacentral-2color.png"
+			},
+			"favicon": {
+				"value": "./img/favicon.ico"
+			},
+			"filter1":{
+				"value": "Reports"
+			},
+			"filter2":{
+				"value": "Status"
+			},
+			"filter3":{
+				"value": "Line of Business"
+			},
+			"filter4":{
+				"value": "Business Segment"
+			},
+			"PaginationHeader":{
+				"value": "Reports"
+			},
+			"attributes":{
+    			"Description":{
+    			    "name":"Description",
+           			"id":"00000000-0000-0000-0000-000000003114",
+           			"display":"default",
+           			"isFacet":"false",
+           			"message":"No value has been given yet"
+     			},
+     			"Location":{
+     			    "name":"Location",
+           			"id":"00000000-0000-0000-0000-000000000203",
+           			"display":"always",
+           			"isFacet":"false",
+           			"message":"No value has been given yet"
+     			}
+			}
+		}
+	}
+}

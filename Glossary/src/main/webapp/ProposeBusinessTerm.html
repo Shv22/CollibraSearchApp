@@ -1,0 +1,46 @@
+	<md-dialog flex="50">
+          <md-content class="popUp-padding">
+          		<div class="popup-header">
+					<h4 class="popUp-title">Propose Business Term Latest</h4>
+				</div>
+              <div layout-fill>
+              <form>
+					<div class="form-group">
+						<label for="inputName">Name</label>
+						<input class="form-control" name="BusinessTermName" ng-model="term.name" type="text">
+					</div>
+					<div class="form-group">
+						<label for="inputName">Type</label>
+						<md-select ng-model="businessAssetType" placeholder="Select business asset">
+	            				<md-option ng-repeat="businessTerm in businessTermTypes" ng-value="businessTerm.id">
+	              					{{ businessTerm.type }}
+	            				</md-option>
+	          			</md-select>
+	          		</div>
+					<div class="form-group">
+						<label for="inputName">Glossary Name</label>
+	                	<md-select ng-model="domainName"  placeholder="Select Business Glossary">
+	            				<md-option ng-repeat="domain in domainListNew" ng-value="domain.name.id">
+	              					{{ domain.name.val }}
+	            				</md-option>
+	          			</md-select>
+	          		</div>
+					<div class="form-group">
+						<label for="inputDefinition">Proposed Definition</label>
+						<textarea class="form-control" name="BusinessTermDefinition" ng-model="term.definition" placeholder="Click here and start typing..."></textarea>
+					</div>
+					<div class="form-group">
+						<label for="inputDescription">Proposed Description</label>
+						<textarea class="form-control" name="BusinessTermDescription" ng-model="term.description" placeholder="Click here and start typing..."></textarea>
+					</div>
+	          		<div class="form-group">
+						<label for="reasonForProposal">Reason for proposal</label>
+						<textarea class="form-control" name="reasonForProposal" ng-model="term.note" placeholder="Click here and start typing..."></textarea>
+					</div>
+	          		</form>
+	          		<div class="popUp-footer">
+						<button class="btn btn-primary" ng-click="proposeTerm()">Propose</button>
+              		</div>
+              		</div>
+          </md-content>
+</md-dialog>

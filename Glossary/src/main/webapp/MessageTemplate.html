@@ -1,0 +1,23 @@
+	<md-dialog flex="40">
+          <md-content class="popUp-padding">
+              <form>
+					<div class="message">
+					 <div ng-if="termName == ''">
+					 	<h2><p>{{ message }}</p></h2>
+					 </div>
+					 <div ng-if="termName != ''">
+                        <h1>{{ message }}</h1>	
+                        <div ng-if="status == 'propose'">				 
+					 		<h2><p><a href="{{ termUrl }}" target="_blank">{{ termName }}</a> was created successfully</p></h2>
+					 	</div>
+                        <div ng-if="status == 'update'">				 
+					 		<h2><p><a href="{{ termUrl }}" target="_blank">{{ termName }}</a> was updated successfully</p></h2>
+					 	</div>
+					 </div>
+					</div>
+        	</form>
+	          		<div class="popUp-footer">
+						<button class="btn btn-primary" ng-click="closeMessage()">Close</button>
+              		</div>
+          </md-content>
+</md-dialog>

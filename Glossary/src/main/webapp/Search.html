@@ -1,0 +1,543 @@
+<!DOCTYPE >
+<html ng-app="SearchGateway" ng-controller="SearchController" >
+<head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-resource.min.js"></script>
+      
+      <script src="./node_modules/angular-material/angular-material.min.js"></script>
+      <script src="./node_modules/angular-animate/angular-animate.js"></script>
+      <script src="./node_modules/angular-aria/angular-aria.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.js"></script>
+      <script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+      <script src="./js/application.js?v=7"></script>
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="./node_modules/angular-material/angular-material.min.css">
+   	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'> 
+	  <link rel="stylesheet" href="./css/application.css?v=6786">
+	  <link href="{{ favicon }}" rel="icon" type="image/x-icon" />
+	  
+      <title>{{ title }}</title>
+</head>
+	<body data-ng-init="init();ownerCount = 0;stewardCount= 0;"  class="app-theme" ng-class="transparent === true ? 'app-theme-overflow2': 'app-theme-overflow1'" ng-cloak>
+	
+	<div ng-show="loadingApp">
+	<div class="loadingApp1">
+		<div class="load-app"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:48px"></i></div>
+    </div>
+	</div>
+	<div ng-hide="loadingApp">
+	<div>
+	<form>
+		 <div ng-if ="showSearchFromUrl == 'true'">
+			<md-toolbar style="background-color:transparent;" >
+				<div class="app-toolbar">
+						<div class="logo">
+                     		<img src="{{ logo }}"  height="35" width="150">
+                     	</div>
+                     	
+                     	<div class="search-bar">
+                     		<div class="input-group stylish-input-group">
+                        		<input type="text" class="form-control" id="searchTerm" ng-model="searchForm.term" >
+                        		<span class="input-group-addon">
+		                            	<button type="submit" id="bth-search" class="searchButton" ng-click="searchTerm()">
+		                            	<span class="glyphicon glyphicon-search"></span>
+		                        	</button>
+                        		</span>
+                        		<span class="input-group-addon">
+                        				<button id="search-cancel" class="clearButton" ng-click="clearSearch()">
+		                            		<span class="glyphicon glyphicon-remove"></span>
+		                            	</button>
+                        		</span>                        		
+                        	</div>
+                     </div>
+                 </div>						
+         	</md-toolbar>
+         </div>
+		<article layout="row">
+		<section class="glossary-sidebar background-color-secondary hide-sm">
+		    <md-sidenav  id="mySidenav" md-is-locked-open="true" class="md-whiteframe-5dp app-sidenav">
+			<div class="filter-container">
+			<span ng-if="app == 'GlossaryApp'">		    
+               <md-button class="md-raised md-primary proposeTermButton" ng-click="open()">Propose new Term</md-button>
+            </span>
+                <h3>Refine Results By:</h3>
+                	<div class="facet-section">
+						<h5 class="glossary-header">{{ filter1 }}</h5>
+						   <ul class="glossary-list">
+							        <div ng-if ="app == 'GlossaryApp'">
+										<li>
+											<md-checkbox  class="facetCheck" md-no-ink="true">
+					              	     		<md-tooltip md-direction="top">NBC Enterprise Glossary Domain</md-tooltip>
+					                	 		<span>NBC Enterprise Gloss...</span>
+											</md-checkbox>
+										</li>
+									</div>
+					              	<li ng-repeat="domain in domainList | orderBy:'name.val'">
+				              	     	<md-checkbox ng-checked="exists(domain, selected, selectedDomainIds)" ng-click="toggle(domain, selected, selectedDomainIds,selectedStatus,selectedStatusIds)" class="facetCheck" md-no-ink="true">
+				              	     		<md-tooltip md-direction="top">{{ domain.name.val }}</md-tooltip>
+				                	 		<span>{{ domain.name.val | limitTo: 20 }}{{domain.name.val.length > 20 ? '...' : '' }}</span>
+										</md-checkbox>
+					                </li>
+		                	</ul>
+	                </div>
+	                <div class="facet-section">
+						<h5 class="glossary-header">{{ filter2 }}</h5>
+						<ul class="glossary-list">
+			              	<li ng-repeat="status in statuses | orderBy:'name'">
+			              	     	<md-checkbox ng-checked="statusExists(status, selectedStatus,selectedDomainIds)" ng-click="statusToggle(status,selected,selectedDomainIds,selectedStatus,selectedStatusIds)" class="facetCheck" md-no-ink="true">
+			              	     		<md-tooltip md-direction="top">{{ status.name }}</md-tooltip>
+			                	 		<span>{{ status.name | limitTo: 20 }}{{status.name.length > 20 ? '...' : '' }}</span>
+									</md-checkbox>
+			                </li>
+		                </ul>
+	                </div>
+	                
+	                <div class="facet-section">
+						<h5 class="glossary-header">{{ filter3 }}</h5>
+						<ul class="glossary-list">
+			              	<li ng-repeat="lob in lobList">
+			              	     	<md-checkbox ng-checked="lobExists(lob, selectedLOBs)" ng-click="lobToggle(lob,selectedLOBs)" class="facetCheck" md-no-ink="true">
+			              	     		<md-tooltip md-direction="top">{{ lob.name.val }}</md-tooltip>
+			                	 		<span>{{ lob.name.val | limitTo: 20 }}{{lob.name.val.length > 20 ? '...' : '' }}</span>
+									</md-checkbox>
+			                </li>
+		                </ul>
+	                </div>
+	                
+	                <div class="facet-section">
+						<h5 class="glossary-header">{{ filter4 }}</h5>
+						<ul class="glossary-list">
+			              	<li ng-repeat="businessSegment in businessSegmentList">
+			              	     	<md-checkbox ng-checked="statusExists(businessSegment, selectedBusinessSegments)" ng-click="statusToggle(status,selected,selectedDomainIds,selectedStatus,selectedStatusIds)" class="facetCheck" md-no-ink="true">
+			              	     		<md-tooltip md-direction="top">{{ businessSegment.name.val }}</md-tooltip>
+			                	 		<span>{{ businessSegment.name.val | limitTo: 20 }}{{businessSegment.name.val.length > 20 ? '...' : '' }}</span>
+									</md-checkbox>
+			                </li>
+		                </ul>
+	                </div>
+	                
+	                <div class="facet-section">
+	                <span ng-repeat="attributeFilter  in attributeFilters track by $index">
+	                    <h5 class="glossary-header">{{ attributeFilter.signifier }}</h5>
+	                    <ul class="glossary-list">
+	                    	<li ng-repeat="attributeValue in attributeFilter.value">
+		                    	<md-checkbox  class="facetCheck" md-no-ink="true">
+				              	     		<md-tooltip md-direction="top">{{ attributeValue }}</md-tooltip>
+				                	 		<span>{{ attributeValue | limitTo: 20 }}{{attributeValue.length > 20 ? '...' : '' }}</span>
+								</md-checkbox>
+							</li>
+	                    </ul>
+	                </span>
+	                	<!-- <span ng-repeat="(key, prop)  in attributeFilters">
+	                	     
+	                		<ul ng-repeat="(key1, prop1) in prop">
+								<h5 class="glossary-header"> {{key1}} </h5>
+									<ul class="glossary-list">
+				              	        {{ prop1 }}
+				              		</ul>
+				             </ul>
+		                </span> -->
+	                </div>
+ 			</div>
+             </md-sidenav>
+        </section>
+            <section class="glossary-infobar"></section>
+           	<md-content class="glossary-content" id="main">
+           	      <div ng-show="loading">
+		    		<div class="load-search-content"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:48px"></i></div>
+		    	 </div>
+				 <div ng-hide="loading">
+		           	   	<div class="message-header-top">
+	            	        <div class="search-header">
+	            	       		<div ng-if="filtered.length == 0">
+				                    	<div class="page-header-info"><b>{{ PaginationHeader }} :</b>&nbsp;No matching records found</div>
+				                </div>
+				                <div ng-if="filtered.length != 0">
+				                	<div ng-if="currentPage == 0">     
+				           	   				<div ng-if="(pageSize*(currentPage+1)) > filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing 1 through {{ filtered.length*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+											<div ng-if="(pageSize*(currentPage+1)) <= filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing 1 through {{ pageSize*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+									</div>
+				                	<div ng-if="currentPage != 0">
+											<div ng-if="pageSize == filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1 }} through {{ filtered.length*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+											<div ng-if="(pageSize > filtered.length)"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1 }} through {{ glossaryListSize }} of {{ glossaryListSize}}</div>
+				           	   				</div>
+				           	   		</div> 
+			           	   		</div>
+			           	   	</div> 
+			           	   	<div class="pagination-header">
+		           	   		<div class="ui-grid-pager-container">
+		           	   		<div class="ui-grid-pager-control">
+				               			<button type="button" ng-disabled="currentPage == 0" ng-click="currentPage=0;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowFirstPage">
+			           	   					<md-tooltip md-direction="top">
+												<label class="tooltip-details">First Page</label>
+											</md-tooltip> 
+											<div class="first-triangle">
+											<div class="first-bar"></div>
+											</div>
+					    				</button>
+				    					<button type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowPreviousPage">
+						    				<md-tooltip md-direction="top">
+												<label class="tooltip-details" >Previous Page</label>
+											</md-tooltip>
+											<div class="first-triangle prev-triangle"></div>
+					    				</button>
+					    				<span >
+											<span ng-if="filtered.length === 0">
+												<span class="ui-grid-pager-max-pages-number">
+				    								0 / 0
+				    							</span>
+				    						</span>
+				    						<span ng-if="filtered.length != 0">
+					    						<span ng-if="currentPage+1 > Math.ceil((glossaryListSize)/pageSize)">
+					    							<span class="ui-grid-pager-max-pages-number">
+					    								1 / {{ Math.ceil((glossaryListSize)/pageSize) }} {{ showFirstPage() }}
+					    							</span>
+					    						</span>
+					    						<span ng-if="currentPage+1 <= Math.ceil((glossaryListSize)/pageSize)">
+					    							<span class="ui-grid-pager-max-pages-number">
+					    								{{ currentPage+1 }} / {{ Math.ceil((glossaryListSize)/pageSize) }}
+					    							</span>
+					    						</span>
+				    						</span>
+			    						</span>
+				               			<button type="button" ng-disabled="currentPage >= glossaryListSize/pageSize - 1" ng-click="currentPage=currentPage+1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowNextPage">
+				    						<md-tooltip md-direction="top">
+												<label class="tooltip-details">Next Page</label>
+											</md-tooltip>
+												<div class="last-triangle next-triangle"></div>
+					    				</button>
+				    					<button type="button" ng-disabled="currentPage >= glossaryListSize/pageSize - 1" ng-click="currentPage=Math.ceil((glossaryListSize)/pageSize)-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowLastPage">
+				    						<md-tooltip md-direction="top">
+												<label class="tooltip-details">Last Page</label>
+											</md-tooltip> 
+											<div class="last-triangle next-triangle">
+												<div class="last-bar"></div>
+											</div>
+					    				</button>
+		           	   		</div>
+		           	   		<div class="ui-grid-pager-row-count-picker">
+		           	   				<select ng-model="pageSize" ng-init=" pageSize = pages[0].size" ng-change="getNext(0,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)">
+				     					<option ng-repeat="page in pages" value="{{ page.size }}">{{ page.size }}</option>
+				     				</select>
+		           	   			<span class="ui-grid-pager-row-count-label ng-binding">&nbsp;items per page</span>
+		           	   		</div>
+		           	   		</div>
+		           	   	</div>
+		           	   	</div>
+	  				   <div ng-repeat="resultItem in filtered = (glossaryList)">  					
+            	       <div ng-if="glossaryList.length !=0">	
+            	        <!-- Start of accordian panel  -->
+            			<div class="panel-group"  id="accordion" >
+                           <div class="panel panel-default" >
+                              <div class="panel-heading"  >
+                                 <h4 class="panel-title" ng-click='loadGroup(resultItem.name.id,$index + 1)'>
+                                 <span class="toggleDiv" data-toggle="collapse" data-target="#collapse{{ $index + 1 }}" class="collapsed">
+                                       <div class="header-container">
+                                       		<!-- Articulation Score Calculator  -->
+	                                       		<div class="articulation-score">
+	                                       			<md-tooltip md-direction="top">
+	                                       	    		<label style="font-family: Open Sans;font-size: 12;font-weight: bold;" >
+	                                          				Status: {{ resultItem.status }}
+	                                          			</label>
+		                                       		</md-tooltip>
+		                                       		<div ng-repeat="articulationScore in articulationScoreList">
+		                                       			<div ng-if= "resultItem.status == articulationScore.name">
+														  	    <div ng-if= "articulationScore.value == 5">
+														  	    	<i class="material-icons candidate-icon">error_outline</i>
+														  	    </div>
+														  	    <div ng-if= "articulationScore.value == 10">
+														  	    	<i class="material-icons inProgress-icon">check_circle</i>
+														  	    </div>
+														  	    <div ng-if= "articulationScore.value == 50">
+														  	    	<i class="material-icons underReview-icon">check_circle</i>
+														  	    </div>
+														  	    <div ng-if= "articulationScore.value == 80">
+														  	    	<i class="material-icons reviewed-icon">check_circle</i>
+														  	    </div>
+														  	    <div ng-if= "articulationScore.value == 100.0">
+														  	        <i class="material-icons accepted-icon">check_circle</i>
+														  	    </div>
+								                     	</div>
+											  		</div>
+														<div ng-if= "resultItem.status == 'Invalid'">
+			                                       			<i class="material-icons invalid-icon">remove_circle</i>
+			                                       		</div>
+			                                       		<div ng-if= "resultItem.status == 'Approval Pending'">
+			                                       			<i class="material-icons invalid-icon">access_time</i>
+			                                       		</div>
+										  		</div>
+									  			<div class="details-container">
+		                                          	<div class="term-name-header">
+		                                            	<h5>{{ resultItem.name.val }}</h5>
+		                                          	</div>
+													<div class="term-name-header">
+		                                            	<h6><b>{{ resultItem.context.val }}</b></h6>
+		                                          	</div>
+	                                          	</div>
+                                       </div>
+                                 </span>
+                                 </h4>
+                              </div>
+                               <div class="attribute-detail">
+                              		<div ng-repeat="attribute in attributes">
+                              			<div ng-if="attribute.display == 'default'">
+		                              		<div class="attribute-detail-header">
+			                              		{{ attribute.name }}
+			                              		<div style="float:right">
+			                              			<md-tooltip md-direction="top">
+														<label class="tooltip-details">Open in Collibra DGC</label>
+													</md-tooltip>  
+						                            	<a href="{{ resultItem.name.pageUrl }}" target="_blank" class="text-color-accent2"><i class="material-icons open-icon">open_in_new</i></a>
+							                      		<!-- <md-tooltip md-direction="top">
+															<label class="tooltip-details">Edit this term</label>
+														</md-tooltip> 	-->		                            
+						                            	<i class="material-icons edit-icon" ng-click="openEdit(resultItem,true,'TE')">&#xe254;</i>
+						                            	<span ng-if="app == 'GlossaryApp'">
+						                            	<i class="material-icons edit-icon">&#xe254;</i>
+						                            	</span>
+			                              		</div>
+		                              		</div>
+		                              		<div ng-if="resultItem.attributes.length == 0">
+		                              			<div class="attribute-detail-value-def" >{{ attribute.message }}</div>
+		                              		</div>
+		                              		<div ng-repeat="attr in resultItem.attributes">
+		                              		    <div ng-if="attribute.name == attr.type">
+		                              		    	<p dd-text-collapse dd-text-collapse-max-length="250" dd-text-collapse-text="{{ attr.val }}" class="attribute-detail-value">{{ attr.val }}</p>
+		                              		    </div>
+		                              		</div>
+                              			</div>
+                              		</div>
+                              	</div>
+                              <div id="collapse{{ $index + 1 }}" class="panel-collapse collapse">
+                                 <div class="panel-body" >
+                                    <div ng-repeat="attribute in resultItem.attributes">
+                                    	<div ng-repeat="attr in attributes">
+                                    		<div ng-if="attr.name == attribute.type">
+                                    		   <div ng-if="attr.display != 'default' && attr.display != 'doNotDisplay'">
+                                    		   	<div ng-if="attr.display == 'doNotDisplayOnNull'">
+                                    		   	    <div ng-if="attribute.val.length != 1">
+	                                    		   	    <div class="attribute-detail">
+	            		                                 	<div class="attribute-detail-header">{{ attribute.type }}</div>
+	        	        		              			 	<div class="attribute-detail-value" dd-text-collapse dd-text-collapse-max-length="150" dd-text-collapse-text="{{ attribute.val }}">{{ attribute.val }}</div>
+	        	                		      			 </div>
+                                    		   	    </div>
+                                    		   	</div>
+                                    		   	<div ng-if="attr.display != 'doNotDisplayOnNull'">
+	                                    		   	    <div class="attribute-detail">
+	            		                                 	<div class="attribute-detail-header">{{ attribute.type }}</div>
+	        	        		              			 	<div class="attribute-detail-value" dd-text-collapse dd-text-collapse-max-length="150" dd-text-collapse-text="{{ attribute.val }}">{{ attribute.val }}</div>
+	        	                		      			 </div>
+                                    		   	</div>
+                                    		   </div>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                                    <div class="attribute-detail" ng-show="loadingGroup">
+                              			<div class="attribute-detail-header1"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:16px"></i></div>
+                              		</div>
+									<div ng-hide="loadingGroup">
+                                    <div ng-if="divlocation == ($index + 1)">
+	                                    <div id="relations{{ $index + 1 }}" ng-repeat="relation in relationList">
+	                                       	<div class="attribute-detail">
+	                                       	  	<div class="attribute-detail-header">{{ relation.role }}</div>
+	                              				<a href="{{collibraUrl}}asset/{{ relation.reourceId }}" target="_blank">
+	                              					<div class="attribute-detail-value">{{ relation.signifier }}</div>
+	                              				</a>
+	                              			</div>
+	                                    </div>
+	                                    <div ng-if="commentsList.length !=0">
+	                                    	<div class="attribute-detail">
+		                                       <div class="attribute-detail-header">Comments :</div>
+			                                       <div id="comments{{ $index + 1 }}" ng-repeat="comment in commentsList">
+			                                          <div class="comments-value">
+			                                                <div class="box2">
+			                                                   <div>
+			                                                      <label style="font-family: Open Sans;font-size: 12;font-weight: bold;" class="attribute-detail-value">
+			                                                      {{ comment.createdBy.firstName }}&nbsp;{{ comment.createdBy.lastName }}
+			                                                      </label>
+			                                                   </div>
+			                                                   <div >
+			                                                      <p style="font-family: Open Sans;font-size: 12;" class="attribute-detail-value">
+			                                                         {{ comment.content }}
+			                                                      </p>
+			                                                   </div>
+			                                                </div>
+			                                          </div>
+				                                       <div id="replies{{ $index + 1 }}" ng-repeat="reply in comment.replies.comment">
+				                                          <div class="comments-value">
+				                                                <div class="box2">
+				                                                   <div>
+				                                                      <label style="font-family: Open Sans;font-size: 12;font-weight: bold;" class="attribute-detail-value">
+				                                                      {{ reply.createdBy.firstName }}&nbsp;{{ reply.createdBy.lastName }}
+				                                                      </label>
+				                                                   </div>
+				                                                   <div >
+				                                                      <p style="font-family: Open Sans;font-size: 12;" class="attribute-detail-value">
+				                                                         {{ reply.content }}
+				                                                      </p>
+				                                                   </div>
+				                                                </div>
+				                                          </div>
+				                                       </div>
+			                                       </div>
+		                                       </div>
+		                                    </div>
+                                    <div class="attribute-detail">
+                                       <div class="attribute-detail-header">Responsibilities</div>
+                                       <div class="attribute-detail-value">
+                                       <div class="row">
+	                                       <div class="col-md-2 responsibility-header">
+	                                          <h6><b>Business Stewards</b></h6>
+	                                          <div id="member{{$parent.$index + 1}}{{ $index + 1 }}" ng-repeat="member in memberList">
+	                                             <div ng-if ="member.role.signifier == 'Business Steward'">
+	                                                <div class="row responsibility-row" >
+	                                                	<md-tooltip md-direction="top">
+	                                                	     <label style="font-family: Open Sans;font-size: 12;font-weight: bold;" >
+	                                                   			{{ member.ownerUser.emailAddress }}
+	                                                   		 </label>
+	                                                	</md-tooltip>                                                
+	                                                   <a href="mailto:{{ member.ownerUser.emailAddress }}?Subject=Regarding%20Asset%20%22{{ resultItem.name.val }}%22%20from%20{{ resultItem.context.val }}">
+	                                                   <span style="font-family: Open Sans;font-size: 12;font-weight: bold;">
+	                                                   {{ member.ownerUser.firstName }}&nbsp;{{ member.ownerUser.lastName }}
+	                                                   </span>
+	                                                   </a>
+	                                                </div>
+	                                             </div>
+	                                          </div>
+	                                       </div>
+	                                       <div class="col-md-2 col-md-offset-1 responsibility-header">
+	                                          <h6><b>Owners</b></h6>
+	                                          <div id="member{{ $index + 1 }}" ng-repeat="member in memberList">
+	                                             <div ng-if ="member.role.signifier == 'Owner'">
+	                                                <div class="row responsibility-row">
+	                                                	<md-tooltip md-direction="top">
+	                                                	     <label style="font-family: Open Sans;font-size: 12;font-weight: bold;" >
+	                                                   			{{ member.ownerUser.emailAddress }}
+	                                                   		 </label>
+	                                                	</md-tooltip>
+	                                                   <a href="mailto:{{ member.ownerUser.emailAddress }}?Subject=Regarding%20Asset%20%22{{ resultItem.name.val }}%22%20from%20{{ resultItem.context.val }}">
+	                                                   <span style="font-family: Open Sans;font-size: 12;font-weight: bold;">
+	                                                   {{ member.ownerUser.firstName }}&nbsp;{{ member.ownerUser.lastName }}
+	                                                   </span>
+	                                                   </a>
+	                                                </div>
+	                                             </div>
+	                                          </div>
+	                                       </div>
+	                                       </div> 
+	                                       </div>
+                                    </div>
+                                 </div>
+                                 </div>
+                              </div>
+                              
+                           </div>
+                        </div><!-- End of accordian panel  -->  
+                        </div>
+            		</div>
+            	</div>
+            	<div class="message-header-bottom">
+	            	        <div class="search-header">
+	            	       		<div ng-if="filtered.length == 0">
+				                    	<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;No matching records found</div>
+				                </div>
+				                <div ng-if="filtered.length != 0">
+				                	<div ng-if="currentPage == 0">     
+				           	   				<div ng-if="(pageSize*(currentPage+1)) > filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing 1 through {{ filtered.length*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+											<div ng-if="(pageSize*(currentPage+1)) <= filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing 1 through {{ pageSize*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+									</div>
+				                	<div ng-if="currentPage != 0">
+											<div ng-if="pageSize == filtered.length"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1 }} through {{ filtered.length*(currentPage+1) }} of {{ glossaryListSize }}</div>
+				           	   				</div>
+											<div ng-if="(pageSize > filtered.length)"> 
+				           	   					<div class="page-header-info"><b>{{ PaginationHeader }}:</b>&nbsp;Showing {{ (pageSize*currentPage)+1 }} through {{ glossaryListSize }} of {{ glossaryListSize}}</div>
+				           	   				</div>
+				           	   		</div> 
+			           	   		</div>
+			           	   	</div> 
+			           	   	
+			           	   	<div class="pagination-header">
+		           	   		<div class="ui-grid-pager-container">
+		           	   		<div class="ui-grid-pager-control">
+				               			<button type="button" ng-disabled="currentPage == 0" ng-click="currentPage=0;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowFirstPage">
+			           	   					<md-tooltip md-direction="top">
+												<label class="tooltip-details">First Page</label>
+											</md-tooltip> 
+											<div class="first-triangle">
+											<div class="first-bar"></div>
+											</div>
+					    				</button>
+				    					<button type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowPreviousPage">
+						    				<md-tooltip md-direction="top">
+												<label class="tooltip-details" >Previous Page</label>
+											</md-tooltip>
+											<div class="first-triangle prev-triangle"></div>
+					    				</button>
+					    				<span >
+											<span ng-if="filtered.length === 0">
+				    							0 / 0
+				    						</span>
+				    						<span ng-if="filtered.length != 0">
+					    						<span ng-if="currentPage+1 > Math.ceil((glossaryListSize)/pageSize)">
+					    							1 / {{ Math.ceil((glossaryListSize)/pageSize) }} {{ showFirstPage() }}
+					    						</span>
+					    						<span ng-if="currentPage+1 <= Math.ceil((glossaryListSize)/pageSize)">
+					    							{{ currentPage+1 }} / {{ Math.ceil((glossaryListSize)/pageSize) }}
+					    						</span>
+				    						</span>
+			    						</span>
+				               			<button type="button" ng-disabled="currentPage >= glossaryListSize/pageSize - 1" ng-click="currentPage=currentPage+1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowNextPage">
+				    						<md-tooltip md-direction="top">
+												<label class="tooltip-details">Next Page</label>
+											</md-tooltip>
+												<div class="last-triangle next-triangle"></div>
+					    				</button>
+				    					<button type="button" ng-disabled="currentPage >= glossaryListSize/pageSize - 1" ng-click="currentPage=Math.ceil((glossaryListSize)/pageSize)-1;getNext(currentPage,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)" aria-label="ShowLastPage">
+				    						<md-tooltip md-direction="top">
+												<label class="tooltip-details">Last Page</label>
+											</md-tooltip> 
+											<div class="last-triangle next-triangle">
+												<div class="last-bar"></div>
+											</div>
+					    				</button>
+		           	   		</div>
+		           	   		<div class="ui-grid-pager-row-count-picker">
+		           	   				<select ng-model="pageSize" ng-init=" pageSize = pages[0].size" ng-change="getNext(0,pageSize,searchForm.term,selectedDomainIds,selectedStatusIds)">
+				     					<option ng-repeat="page in pages" value="{{ page.size }}">{{ page.size }}</option>
+				     				</select>
+		           	   			<span class="ui-grid-pager-row-count-label ng-binding">&nbsp;items per page</span>
+		           	   		</div>
+		           	   		</div>
+		           	   	</div>
+		           	   	</div>
+              </div>
+            </md-content>
+		 </article>
+         </form>
+         </div>
+         </div>
+	</body>
+</html>

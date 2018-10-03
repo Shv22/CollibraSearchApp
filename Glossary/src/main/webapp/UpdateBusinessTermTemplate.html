@@ -1,0 +1,111 @@
+	<md-dialog flex="60">
+          <md-content class="popUp-padding">
+          		<div class="popUp-header">
+					<h4 class="popUp-title">Update Business Term
+					<button class="close" ng-click="close()">&times;</button>
+					</h4>
+				</div>
+              <div class="popUp-body">
+              <form>
+					<div class="form-group">
+						<label for="inputName" class="inputHeader">Name</label>
+						<input class="form-control" name="BusinessTermName" ng-model="businessTerm.name.val" type="text" disabled>
+					</div>
+		
+		
+					<!-- <div class="form-group">
+						<label for="inputName">Type</label>
+						<md-select ng-model="businessAssetType" disabled>
+	            				<md-option>Business Term</md-option>
+	          			</md-select>
+	          		</div> 
+
+					<div class="form-group">
+						<label for="inputName">Glossary Name</label>
+	                	<md-select ng-model="businessTerm.context.val" ng-value="businessTerm.context.val" disabled>
+	            				<md-option>{{ businessTerm.context.val }}</md-option>
+	          			</md-select>
+	          		</div> -->
+		          		<div ng-repeat="attribute in businessTerm.attributes">
+	                            <div ng-if="attribute.type == 'Definition'">
+	                            	<input class="form-control" id="definitionId" ng-model="attribute.id" ng-hide="true" >
+	                            </div>
+
+	                            <div ng-if="attribute.type == 'Descriptive Example'">
+	                            	<input class="form-control" id="descriptiveExId" ng-model="attribute.id" ng-hide="true">
+	                            </div>
+
+	                            <div ng-if="attribute.type == 'Note'">
+	                            	<input class="form-control" id="noteId" ng-model="attribute.id" ng-hide="true">
+	                            </div>
+	                            
+	                    </div>
+	                    
+	                             	<!-- <div class="form-group">
+	                             		<label for="inputDefinition">Proposed Definition</label>
+										<textarea class="form-control" name="BusinessTermDefinition" ng-model="term.definition"></textarea>
+									</div>
+	                             	<div class="form-group">
+										<label for="inputDescriptiveExample">Proposed Descriptive Example</label>
+										<textarea class="form-control" name="BusinessTermDescriptiveExample" ng-model="term.description"></textarea>
+									</div>
+	                             	<div class="form-group">
+	                             		<label for="inputDefinition">Reason for amendment</label>
+										<textarea class="form-control" name="BusinessTermDefinition" ng-model="term.note"></textarea>
+									</div> -->
+	                    
+	                    <div ng-repeat="attribute in businessTerm.attributes | filterAttributesItems : 'Definition'" >
+	                            <div ng-if="attribute.split(':')[0] == 'Definition'">
+	                             	<div class="form-group">
+	                             		<label for="inputDefinition" class="inputHeader">Definition</label>
+	                             		<div ng-model="term.definition">
+											<textarea class="form-control" id="BusinessTermDefinition">{{ attribute.split(':')[1] }}</textarea>
+											
+										</div>
+									</div>
+	                            </div>
+	                            <div ng-if="attribute.split(':')[0] == 'Descriptive Example'">
+	                             	<div class="form-group">
+										<label for="inputDescriptiveExample" class="inputHeader">Descriptive Example</label>
+										<div ng-model="term.description">
+											<textarea class="form-control" id="BusinessTermDescriptiveExample">{{ attribute.split(':')[1] }}</textarea>
+										</div>
+									</div>
+	                            </div>
+	                            <div ng-if="attribute.split(':')[0] == 'Note'">
+	                             	<div class="form-group">
+	                             		<label for="inputDefinition" class="inputHeader">Reason for amendment</label>
+	                             		<div ng-model="term.note">
+											<textarea class="form-control" id="BusinessTermNote"></textarea>
+										</div>
+									</div>
+	                            </div>
+	                    </div> 
+	                    
+<!-- 	                    <div ng-repeat="attribute in businessTerm.attributes " >
+	                            <div ng-if="attribute.type == 'Definition'">
+	                             	<div class="form-group">
+	                             		<label for="inputDefinition">Proposed Definition</label>
+										<textarea class="form-control" name="BusinessTermDefinition" ng-model="attribute.val">{{ attribute.val }}</textarea>
+									</div>
+	                            </div>
+	                            <div ng-if="attribute.type == 'Descriptive Example'">
+	                             	<div class="form-group">
+										<label for="inputDescriptiveExample">Proposed Descriptive Example</label>
+										<textarea class="form-control" name="BusinessTermDescriptiveExample" ng-model="desc.val">{{ attribute.val }}</textarea>
+									</div>
+	                            </div>
+	                            <div ng-if="attribute.type == 'Note'">
+	                             	<div class="form-group">
+	                             		<label for="inputDefinition">Reason for amendment</label>
+										<textarea class="form-control" name="BusinessTermDefinition" ng-model="note.val"></textarea>
+									</div>
+	                            </div>
+	                    </div> -->
+                    </form>
+	          		<div class="popUp-footer">
+						<button class="btn btn-primary" ng-click="updateTerm()">Update</button>
+              		</div>
+              		</div>
+          </md-content>
+</md-dialog>

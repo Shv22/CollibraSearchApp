@@ -1,0 +1,122 @@
+.logos{
+	max-width: 280px;
+    min-width: 280px;
+    background: transparent;
+}
+
+.search-bar{
+	/*border-bottom: outset;*/	
+}
+
+.search-content{
+	/* background-color: transparent;
+	padding: 5px 10px 150px 20px;
+    position: absolute;
+    height: 100%;
+    display: block;
+    left: 300px;
+    right: 300px; 
+    width: calc(100% - 600px); */
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.tiles {
+	justify-content: space-between;
+	flex-direction: column;
+}
+
+ .tiles .tile{
+    width: 300px;
+	display: inline-block;
+} 
+
+.entity-card-view{
+	display:block;
+}
+/* Setting for Header bar color based on app selected */
+.tiles .tile .tile-meta .tile-tag.GlossaryApp {
+        box-shadow: inset -2px 0 0 #009BEF; }
+.tiles .tile .tile-meta .tile-tag.ReportsApp {
+		box-shadow: inset -2px 0 0 #3E870B; }
+.tiles .tile .tile-meta .tile-tag.DataSetsApp {
+		box-shadow: inset -2px 0 0 #EA5013; }
+		
+.GlossaryApp {
+        box-shadow: inset -10px 0 0 #009BEF; }
+.ReportsApp {
+		box-shadow: inset -10px 0 0 #3E870B;; }
+.DataSetsApp {
+		box-shadow: inset -10px 0 0 #EA5013; }
+
+.app-right-sidenav {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  /*max-width: 300px;
+  min-width: 300px;*/
+  background-color:#d1d2d4;
+  max-height: 100%;
+  min-height: 100%;
+}		
+
+.linkButton{
+	font-family: 'Open Sans', serif; 
+	font-size: 15px; 
+	background-color:transparent;
+	width:100%;
+	width: -webkit-fill-available;
+	width: -moz-available;
+}
+
+.message-success{
+	border-color: black;
+    background-color: #b3b6b4;
+}
+
+.md-primary{
+	border: black;
+}
+
+.md-sidenav-right {
+  /* Cosmetic, show where the fill starts */
+  background-color: transparent;
+  
+  /* Override from absolute to relative */
+  position: relative;
+  
+  /* Change to block display */
+  display: block;
+  width: 500px;
+}
+
+.md-sidenav-left {
+  /* Cosmetic, show where the fill starts */
+  background-color: transparent;
+  
+  /* Override from absolute to relative */
+  position: relative;
+  
+  /* Change to block display */
+  display: block;
+  width: 500px;
+}
+
+.main-toolbar {
+  /* Put top toolbar on a higher layer than sidenav, which has z-index: 60 */
+  
+  z-index: 61;
+  /* ..Not really needed unless you want the menu
+     to be overlapped by the top bar, which it is
+     not currently, thanks to "display: block" and            "position: relative" */
+  /* Cosmetic */
+  background-color: transparent;
+}
+
+.md-grid-list md-grid-tile {
+	width: 50px;
+	height: 50px;
+}
+.em-default {
+	font-family: sans-serif;
+	color: black;
+}
